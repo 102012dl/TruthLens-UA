@@ -9,8 +9,11 @@
 | Дія | Стан | Примітка |
 |-----|------|----------|
 | Ініціалізація Git (`git init`, `branch -M main`) | ✅ | Репо створено локально |
-| Індекс і перший коміт (`git add -A`, `git commit`) | ✅ | 29 файлів, коміт «feat: TruthLens UA MVP» |
-| Додано remote `origin` (GitHub) | ✅ | `https://github.com/102012dl/TruthLens-UA.git` |
+| Індекс і коміти (`git add -A`, `git commit`) | ✅ | Документація, merge з origin |
+| Remote `origin` (GitHub) | ✅ | `https://github.com/102012dl/TruthLens-UA.git` |
+| **Push у GitHub** | ✅ | Код у [github.com/102012dl/TruthLens-UA](https://github.com/102012dl/TruthLens-UA) |
+| Remote `gitlab` | ✅ | `https://gitlab.com/102012dl/truthlens-ua.git` |
+| Push у GitLab | ⏳ | Виконати `git push -u gitlab main` (при потребі — логін у терміналі) |
 
 **Далі потрібні дії від вас** — нижче з орієнтовним часом.
 
