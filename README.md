@@ -31,4 +31,3 @@ Then open `http://localhost:8000/docs` to test the API.
 
 - **GitHub Actions:** on push to `main` — lint, tests, ML validation; then mirror to GitLab.
 - **GitLab:** same code runs in GitLab CI (see `.gitlab-ci.yml`). To enable the mirror, add `GITLAB_SSH_KEY` in GitHub Secrets and follow **docs/GITLAB_MIRROR.md**.
-
