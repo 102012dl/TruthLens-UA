@@ -23,3 +23,7 @@ data/*.zip
 !data/.gitkeep
 .idea/
 *.ipynb_checkpoints/
+mlruns/
+notebooks/mlruns/
+notebooks/mlflow.db
+*.db

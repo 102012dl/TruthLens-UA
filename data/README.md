@@ -7,9 +7,8 @@
   - `Fake.csv`
   - `True.csv`
 - **Як завантажити:**
-  1. Зареєструйтесь на [Kaggle](https://www.kaggle.com).
-  2. Відкрийте посилання датасету вище → Download.
-  3. Розархівуйте zip і скопіюйте `Fake.csv`, `True.csv` у цю папку `data/`.
+  - **Автоматично (рекомендовано):** з кореня проєкту запустіть `python scripts/download_datasets.py` — дані завантажаться з [UVic ISOT](https://onlineacademiccommunity.uvic.ca/isot/) без реєстрації.
+  - Вручну: 1) Зареєструйтесь на [Kaggle](https://www.kaggle.com). 2) Відкрийте посилання датасету вище → Download. 3) Розархівуйте zip і скопіюйте `Fake.csv`, `True.csv` у цю папку `data/`.
 - Альтернатива через CLI:
   ```bash
   pip install kaggle
