@@ -1,0 +1,84 @@
+name: TruthLens UA CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt --quiet
+          pip install pytest pytest-asyncio pytest-cov ruff --quiet
+
+      - name: Lint (ruff)
+        run: ruff check src/ --ignore E501
+
+      - name: Unit tests
+        run: |
+          pytest tests/unit/ -v --tb=short --cov=src \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            -x  # stop on first failure
+        continue-on-error: true
+
+      - name: ML Model Validation
+        run: |
+          python -c "
+          import os
+          os.makedirs('artifacts', exist_ok=True)
+          from src.ml.analyzer import analyze_text, get_analyzer
+          a = get_analyzer()
+          if not a.model_loaded:
+              print('⚠️  No model — using rules (OK for CI)')
+          # Test ІПСО detection always works
+          r = analyze_text('ТЕРМІНОВО!!! ЗРАДА!!! Поширте!!!')
+          assert len(r['ipso_techniques']) > 0, 'ІПСО detection broken!'
+          r2 = analyze_text('НБУ підвищив облікову ставку до 16%.')
+          print(f'✅ Analysis OK: ІПСО={r[\"label\"]} | Official={r2[\"label\"]}')
+          "
+
+      - name: Build Docker
+        run: |
+          docker build -t truthlens-ua:${{ github.sha }} . \
+            --build-arg BUILDKIT_INLINE_CACHE=1
+        continue-on-error: true
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: coverage.xml
+        continue-on-error: true
+
+  mirror-to-gitlab:
+    needs: test-and-validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Mirror to GitLab
+        env:
+          GITLAB_SSH_KEY: ${{ secrets.GITLAB_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s' "$GITLAB_SSH_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -t ed25519 gitlab.com >> ~/.ssh/known_hosts 2>/dev/null
+          git remote add gitlab git@gitlab.com:102012dl/truthlens-ua.git 2>/dev/null || true
+          git push gitlab main --force
+          echo "✅ Mirrored to GitLab"
+

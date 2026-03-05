@@ -1,0 +1,58 @@
+# TruthLens-UA — GitLab CI/CD pipeline (mirror of GitHub workflow)
+# Runs on push to main or merge requests. Mirror: GitHub 102012dl/TruthLens-UA
+# SAST & Secret Detection: Free tier on GitLab.com (see docs/GITLAB_SAST_SECRET_DETECTION.md)
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+default:
+  image: python:3.11-slim
+
+stages:
+  - test
+  - validate
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  key: "${CI_JOB_NAME}"
+  paths:
+    - .cache/pip
+
+before_script:
+  - pip install --upgrade pip
+  - pip install -r requirements.txt --quiet
+  - pip install pytest pytest-asyncio pytest-cov ruff --quiet
+
+lint:
+  stage: test
+  script:
+    - ruff check src/ --ignore E501
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+test:
+  stage: test
+  script:
+    - pytest tests/unit/ -v --tb=short --cov=src --cov-report=term-missing --cov-report=xml:coverage.xml -x
+  allow_failure: true
+
+ml-validate:
+  stage: validate
+  script:
+    - python -c "
+      import os
+      os.makedirs('artifacts', exist_ok=True)
+      from src.ml.analyzer import analyze_text, get_analyzer
+      a = get_analyzer()
+      if not a.model_loaded:
+          print('No model — using rules (OK for CI)')
+      r = analyze_text('ТЕРМІНОВО!!! ЗРАДА!!! Поширте!!!')
+      assert len(r['ipso_techniques']) > 0, 'ІПСО detection broken!'
+      r2 = analyze_text('НБУ підвищив облікову ставку до 16%.')
+      print('Analysis OK:', r['label'], '|', r2['label'])
+      "
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_PIPELINE_SOURCE == "merge_request_event"

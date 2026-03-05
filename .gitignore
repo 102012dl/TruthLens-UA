@@ -1,0 +1,25 @@
+# TruthLens UA — ignore patterns
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.joblib
+artifacts/*.joblib
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.env
+.env.local
+*.log
+data/*.csv
+data/*.zip
+!data/.gitkeep
+.idea/
+*.ipynb_checkpoints/
