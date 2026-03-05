@@ -1,6 +1,6 @@
 # TruthLens-UA — поточний стан проєкту
 
-**Оновлено (UTC):** 2026-03-05T22:01:54Z
+**Оновлено (UTC):** 2026-03-05T22:04:31Z
 
 Цей файл оновлюється скриптом `python scripts/update_project_state.py` для збереження прогресу після паузи чи перезавантаження.
 
@@ -17,7 +17,7 @@
 ## Останній коміт
 
 ```
-1eb90663cada1590d80d8e2edfae32d1847b24cd 2026-03-05 22:32:47 +0100 docs: GitHub push done, GitLab push optional step
+fa3212e52647f5edfc6da28626111c9fd71d5a9e 2026-03-05 23:04:06 +0100 merge: resolve .gitlab-ci.yml conflict, keep TruthLens-UA pipeline
 ```
 
 ## Рекомендований наступний крок
