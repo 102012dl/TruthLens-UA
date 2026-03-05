@@ -8,19 +8,19 @@
 
 | Перевірка | Стан |
 |-----------|------|
-| Git (origin, gitlab) | ❌ репо не ініціалізовано / remotes відсутні |
+| Git (локально) | ✅ `git init`, коміт, remote `origin` додано |
+| Git push (GitHub) | ⏳ потрібно створити репо та виконати `git push -u origin main` |
 | data/Fake.csv, True.csv | ❌ відсутні |
 | artifacts/best_model.joblib | ❌ відсутня |
 | pytest | ⚠️ частина тестів очікує модель |
 
 **Один конкретний наступний крок:**
 
-1. **Ініціалізуйте Git і зробіть перший push**  
-   - Відкрийте `docs/GIT_SETUP.md` і виконайте кроки: створіть репо на GitHub (102012dl/TruthLens-UA), при потребі на GitLab (102012dl/truthlens-ua).  
-   - У корені проєкту: `git init`, `git add -A`, `git commit -m "Initial TruthLens-UA"`, `git remote add origin https://github.com/102012dl/TruthLens-UA.git`, `git push -u origin main`.  
-   - Після цього знову запустіть `python scripts/next_step.py` — наступним кроком буде завантаження ISOT у `data/`.
+1. **Створіть репо на GitHub** (якщо ще немає): [github.com/new](https://github.com/new) → name `TruthLens-UA`, Public.  
+2. **Виконайте push:** у корені проєкту: `git push -u origin main`.  
+3. Далі: завантажити ISOT у `data/` (див. `data/README.md`) → виконати `notebooks/01_isot_fake_news_mlflow.ipynb` → деплой за `docs/DEPLOYMENT.md`.
 
-Далі по черзі: завантажити ISOT (Fake.csv, True.csv) → виконати ноутбук 01 → деплой за `docs/DEPLOYMENT.md`.
+**Усі необхідні дії та розрахунковий час:** **docs/REQUIRED_ACTIONS_AND_TIME.md**.
 
 ---
 
