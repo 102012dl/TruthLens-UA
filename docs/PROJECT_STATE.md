@@ -1,6 +1,6 @@
 # TruthLens-UA — поточний стан проєкту
 
-**Оновлено (UTC):** 2026-03-07T21:34:55Z
+**Оновлено (UTC):** 2026-03-07T21:54:33Z
 
 Цей файл оновлюється скриптом `python scripts/update_project_state.py` для збереження прогресу після паузи чи перезавантаження.
 
@@ -17,12 +17,12 @@
 ## Останній коміт
 
 ```
-d568f8858593c9926d0364196297c3fe282191c4 2026-03-05 23:17:16 +0100 docs: session report 050326 2311 â€” step-by-step, stats, pause/shutdown OK
+bfd83f45228255d93a3fbdce9fa1e5bae72900c0 2026-03-07 22:54:26 +0100 feat: MVP auto-demo â€” analyzer hybrid IPSO, demo_api, run_ab_tests, pytest pass
 ```
 
 ## Рекомендований наступний крок
 
-notebooks/03_ua_nlp_training.ipynb (A/B), git push origin main && git push gitlab main, деплой (docs/DEPLOYMENT.md).
+Деплой (docs/DEPLOYMENT.md), потім python scripts/demo_api.py [URL]; git push origin main && git push gitlab main.
 
 ## Примітка
 
