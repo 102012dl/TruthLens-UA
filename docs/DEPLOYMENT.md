@@ -104,3 +104,23 @@ web: uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
 - Для TruthLens UA достатньо **requirements.txt** та команди запуску **uvicorn** з `$PORT`; при потребі додайте **Procfile** або **Dockerfile** і змінні середовища для моделі.
 
 Після налаштування Git (див. **GIT_SETUP.md**) ви можете підключити той самий репо до Render і Railway і використовувати один репо для обох платформ.
+
+---
+
+## 7. Перевірка після деплою (демо-тексти)
+
+Після отримання URL (наприклад `https://truthlens-xxx.onrender.com`):
+
+```bash
+python scripts/demo_api.py https://truthlens-xxx.onrender.com
+```
+
+Локально (коли API запущено на порту 8000):
+
+```bash
+uvicorn src.api.main:app --reload
+# В іншому терміналі:
+python scripts/demo_api.py
+```
+
+Скрипт викликає `/health` та `/api/analyze` для 8 демо-текстів (FAKE/REAL) — зручно для перевірки перед захистом.

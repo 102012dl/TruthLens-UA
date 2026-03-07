@@ -151,6 +151,18 @@ class TruthLensAnalyzer:
             ipso_boost = len(ipso_hits) * 0.05
             base = 1.0 if is_fake else 0.0
             fake_score = min(base * confidence + ipso_boost, 0.99)
+            # Hybrid: strong ІПСО signal overrides ML on OOD (e.g. short UA texts)
+            if len(ipso_hits) >= 2:
+                fake_score = max(fake_score, 0.82)
+            elif len(ipso_hits) >= 1 and any(
+                t in ipso_hits for t in ("urgency_injection", "deletion_threat", "military_disinfo")
+            ):
+                fake_score = max(fake_score, 0.75)
+            # Sensationalist health/sci headlines (e.g. "cures cancer", "live forever")
+            if not is_fake and len(text) < 200:
+                lower = text.lower()
+                if ("cures" in lower or "live forever" in lower) and ("cancer" in lower or "scientists" in lower):
+                    fake_score = max(fake_score, 0.55)
 
             label = self._score_to_label(fake_score)
             credibility = max(0, int(100 - fake_score * 95))

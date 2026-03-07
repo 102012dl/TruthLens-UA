@@ -52,7 +52,7 @@ def collect_state() -> dict:
     elif not has_model:
         next_step = "Запустіть notebooks/01_isot_fake_news_mlflow.ipynb (Run All)."
     else:
-        next_step = "notebooks/03_ua_nlp_training.ipynb (A/B), git push origin main && git push gitlab main, деплой (docs/DEPLOYMENT.md)."
+        next_step = "Деплой (docs/DEPLOYMENT.md), потім python scripts/demo_api.py [URL]; git push origin main && git push gitlab main."
 
     return {
         "updated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
