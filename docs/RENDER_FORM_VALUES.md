@@ -29,11 +29,13 @@
 gunicorn your_application.wsgi
 ```
 
-вставити:
+вставити (обовʼязково **дві** літери «u» — **uvicorn**, не vicorn):
 
 ```text
 uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
 ```
+
+Надійніший варіант (не залежить від PATH): `python -m uvicorn src.api.main:app --host 0.0.0.0 --port $PORT`
 
 Після цього натиснути **Deploy web service**. Після успішного деплою зʼявиться URL типу `https://truthlens-ua.onrender.com` (або як ви назвали сервіс).
 
@@ -56,5 +58,27 @@ Render використовує **Python 3.14** за замовчуванням.
 ## Render MCP Server (опційно)
 
 Керування сервісами Render з Cursor/Claude: [Render MCP](https://render.com/docs/mcp). Підключення MCP дає можливість запускати деплой, переглядати логи, змінні середовища з AI-середовища. Для деплою TruthLens-UA достатньо веб-дашборду Render; MCP — для автоматизації.
+
+---
+
+## Якщо при запуску: «vicorn: command not found» (Exited with status 127)
+
+У **Start Command** на Render має бути саме **uvicorn** (з двома «u»), а не vicorn. Виправте в Dashboard:
+
+**Settings** → **Start Command** → замініть на один із варіантів:
+
+```text
+uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
+```
+
+або (рекомендовано):
+
+```text
+python -m uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
+```
+
+Збережіть і зробіть **Manual Deploy** (або сервіс перезапуститься автоматично).
+
+---
 
 Детальніше: **docs/RENDER_GET_URL.md**, **docs/DEPLOYMENT.md**.
