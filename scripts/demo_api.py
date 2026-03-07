@@ -35,6 +35,14 @@ def request(base: str, path: str, method: str = "GET", body: dict | None = None)
         return json.loads(r.read().decode("utf-8"))
 
 
+def _url_has_non_ascii(url: str) -> bool:
+    try:
+        url.encode("ascii")
+        return False
+    except UnicodeEncodeError:
+        return True
+
+
 def main() -> None:
     if sys.platform == "win32":
         try:
@@ -42,6 +50,14 @@ def main() -> None:
         except Exception:
             pass
     base = (sys.argv[1] if len(sys.argv) > 1 else os.environ.get("TRUTHLENS_API_URL", DEFAULT_BASE)).rstrip("/")
+
+    if _url_has_non_ascii(base) or "ваш-url" in base.lower() or "your-url" in base.lower():
+        print("Помилка: вказано плейсхолдер або URL з не-латинськими символами.")
+        print("Потрібен реальний URL вашого сервісу (лише латиниця та цифри).")
+        print("Як отримати URL на Render: див. docs/RENDER_GET_URL.md")
+        print("Приклад: python scripts/demo_api.py https://truthlens-ua.onrender.com")
+        sys.exit(1)
+
     print(f"=== TruthLens UA — демо API ===\nBase URL: {base}\n")
 
     # 1. Health
@@ -51,7 +67,10 @@ def main() -> None:
         print("model_loaded:", health.get("model_loaded"))
     except Exception as e:
         print("GET /health FAILED:", e)
-        print("Переконайтесь, що API запущено: uvicorn src.api.main:app --reload")
+        if base == DEFAULT_BASE:
+            print("Переконайтесь, що API запущено: .venv\\Scripts\\python -m uvicorn src.api.main:app --reload")
+        else:
+            print("Перевірте URL (лише ASCII). Як отримати URL на Render: docs/RENDER_GET_URL.md")
         sys.exit(1)
 
     # 2. Analyze demo texts

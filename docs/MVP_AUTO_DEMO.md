@@ -28,31 +28,51 @@
 
 ## Як повторити демонстрацію вручну
 
-```bash
-# 1. Перевірка стану
-python scripts/next_step.py
+**Важливо (Windows):** щоб уникнути `ModuleNotFoundError: No module named 'joblib'`, завжди використовуйте Python із віртуального середовища.
 
-# 2. Запуск API (один термінал)
-uvicorn src.api.main:app --host 127.0.0.1 --port 8000
+```powershell
+# 0. Один раз: встановити залежності у .venv
+.venv\Scripts\pip install -r requirements.txt
+
+# 1. Перевірка стану
+.venv\Scripts\python scripts/next_step.py
+
+# 2. Запуск API (один термінал) — обовʼязково через .venv
+.venv\Scripts\python -m uvicorn src.api.main:app --host 127.0.0.1 --port 8000
 
 # 3. Демо 8 текстів (інший термінал)
-python scripts/demo_api.py
+.venv\Scripts\python scripts/demo_api.py
 
 # 4. Тести
-pytest tests/unit/ -v --tb=short
+.venv\Scripts\python -m pytest tests/unit/ -v --tb=short
 
 # 5. A/B тести (опційно, ~1 хв на 5k зразках)
-python scripts/run_ab_tests.py --sample 5000
+.venv\Scripts\python scripts/run_ab_tests.py --sample 5000
 ```
+
+Якщо venv активовано (`(.venv) PS ...`), достатньо: `python -m uvicorn ...` та `python scripts/demo_api.py`.
 
 Після перезапуску API (після змін у `src/ml/analyzer.py`) демо покаже оновлену класифікацію: FAKE для текстів з ІПСО та сенсаційними заголовками.
 
+### Якщо виникає `ModuleNotFoundError: No module named 'joblib'`
+
+- Переконайтесь, що запускаєте **той самий Python**, у якому встановлені залежності (наприклад `.venv`).
+- **Рекомендовано:** `.venv\Scripts\python -m uvicorn src.api.main:app --host 127.0.0.1 --port 8000` замість просто `uvicorn ...`.
+- Або активуйте venv: `.venv\Scripts\Activate.ps1`, потім `pip install -r requirements.txt` і `python -m uvicorn ...`.
+
 ---
 
-## Деплой (Railway / Render)
+## Локальний Web Deploy (без публічного доступу)
+
+- Запуск API лише на вашому ПК і демонстрація MVP: **docs/LOCAL_WEB_DEPLOY.md**
+- Один термінал: `uvicorn ... --host 127.0.0.1 --port 8000`; другий: `python scripts/demo_api.py`; браузер: http://127.0.0.1:8000/docs
+
+## Деплой на Render (публічний URL)
 
 - Інструкції: **docs/DEPLOYMENT.md**
-- Після отримання URL: `python scripts/demo_api.py https://ваш-url.onrender.com`
+- **Значення для форми New Web Service:** **docs/RENDER_FORM_VALUES.md** (зокрема Start Command = uvicorn, не gunicorn)
+- **Як отримати URL:** **docs/RENDER_GET_URL.md**
+- Після отримання URL: `python scripts/demo_api.py https://ваш-реальний-url.onrender.com`
 
 ---
 

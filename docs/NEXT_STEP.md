@@ -50,7 +50,7 @@
 | 4 | Push у GitLab (якщо є SSH) | `git push -u gitlab main` |
 | 5 | Дані ISOT | Завантажити з Kaggle у `data/` (Fake.csv, True.csv) — див. data/README.md |
 | 6 | Тренування моделі | Відкрити Jupyter, виконати **Run All** у `notebooks/01_isot_fake_news_mlflow.ipynb` |
-| 7 | Тести | `pytest tests/unit/ -v --tb=short` |
+| 7 | Тести | `python -m pytest tests/unit/ -v --tb=short` (у .venv або `.venv\Scripts\python -m pytest ...`) |
 | 8 | Деплой | Підключити репо до Render/Railway за docs/DEPLOYMENT.md |
 
 ---

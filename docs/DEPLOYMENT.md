@@ -27,10 +27,10 @@
 ### Покрокові дії
 1. **Реєстрація:** https://render.com → Sign Up (через GitHub зручно).  
 2. **New → Web Service.**  
-3. **Connect repository:** виберіть **102012dl/TruthLens** (або ваш репо).  
-4. **Settings:**
+3. **Connect repository:** виберіть **102012dl/TruthLens-UA** (або ваш репо).  
+4. **Settings** — точні значення для форми: **docs/RENDER_FORM_VALUES.md**
    - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `uvicorn src.api.main:app --host 0.0.0.0 --port $PORT`
+   - **Start Command:** `uvicorn src.api.main:app --host 0.0.0.0 --port $PORT` (не gunicorn!)
    - **Root Directory:** залишити порожнім, якщо корінь репо — корінь проєкту.
 5. **Environment:** додати змінні при потребі (наприклад `MODEL_PATH` якщо модель на Render).  
 6. **Create Web Service** — Render зробить перший деплой.  
@@ -109,18 +109,20 @@ web: uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
 
 ## 7. Перевірка після деплою (демо-тексти)
 
-Після отримання URL (наприклад `https://truthlens-xxx.onrender.com`):
+Після отримання URL (наприклад `https://truthlens-ua.onrender.com`). **Як саме отримати URL:** див. **docs/RENDER_GET_URL.md**.
 
 ```bash
-python scripts/demo_api.py https://truthlens-xxx.onrender.com
+python scripts/demo_api.py https://truthlens-ua.onrender.com
 ```
+(Не використовуйте буквально «ваш-url» — це плейсхолдер; потрібен URL з дашборду Render.)
 
-Локально (коли API запущено на порту 8000):
+Локально (коли API запущено на порту 8000). На Windows у .venv використовуйте:
 
-```bash
-uvicorn src.api.main:app --reload
+```powershell
+.venv\Scripts\python -m uvicorn src.api.main:app --reload
 # В іншому терміналі:
-python scripts/demo_api.py
+.venv\Scripts\python scripts/demo_api.py
 ```
+(Якщо виникає `ModuleNotFoundError: No module named 'joblib'`, запускайте uvicorn саме через `.venv\Scripts\python -m uvicorn`.)
 
 Скрипт викликає `/health` та `/api/analyze` для 8 демо-текстів (FAKE/REAL) — зручно для перевірки перед захистом.
