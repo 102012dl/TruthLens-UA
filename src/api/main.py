@@ -5,7 +5,7 @@ import logging
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.ml.analyzer import analyze_text, get_analyzer
 
@@ -45,6 +45,8 @@ class AnalyzeRequest(BaseModel):
 
 
 class AnalyzeResponse(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+
     label: str
     fake_score: float
     credibility: int
@@ -56,6 +58,18 @@ class AnalyzeResponse(BaseModel):
     model_used: str
     deepfake_risk: str
     processing_time_ms: float
+
+
+@app.get("/")
+async def root() -> dict:
+    """Root: посилання на документацію та ендпоінти."""
+    return {
+        "service": "TruthLens UA API",
+        "version": "2.0.0",
+        "docs": "/docs",
+        "health": "/health",
+        "analyze": "POST /api/analyze",
+    }
 
 
 @app.get("/health")
