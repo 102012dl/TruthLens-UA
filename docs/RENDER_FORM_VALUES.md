@@ -17,7 +17,7 @@
 | **Build Command** | `pip install -r requirements.txt` | Вже заповнено. |
 | **Start Command** | **Замінити на:** `uvicorn src.api.main:app --host 0.0.0.0 --port $PORT` | **Не залишати** `gunicorn your_application.wsgi` — це для Django; у проєкті FastAPI. |
 | **Instance Type** | `Free` | Для демо достатньо. |
-| **Environment Variables** | Опційно додати (якщо потрібно): `MODEL_PATH` = `artifacts/best_model.joblib` | Модель у репо не комітиться; на Free без диску можна не додавати — працюватиме rule-based fallback. |
+| **Environment Variables** | **Обовʼязково додати:** `PYTHON_VERSION` = `3.12.7` (щоб уникнути збірки pydantic на Python 3.14). Опційно: `MODEL_PATH` = `artifacts/best_model.joblib` | Див. **docs/RENDER_PYTHON_VERSION.md**. |
 
 ---
 
@@ -41,11 +41,15 @@ uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
 
 ## Якщо збірка падає (Exited with status 1, pydantic-core / maturin / Read-only file system)
 
-Render може використати **Python 3.14**, ігноруючи `runtime.txt` — тоді pip намагається зібрати `pydantic-core` з вихідників (Rust) і падає.
+Render використовує **Python 3.14** за замовчуванням. Сервіс типу «Python 3 Web Service» **не використовує Dockerfile** з репо — тільки Build Command. Тому потрібно вказати версію Python через змінну середовища.
 
-**Рішення: у репо додано Dockerfile.** Якщо в корені є **Dockerfile**, Render автоматично збирає образ через Docker (базовий образ `python:3.12-slim`) і не використовує Python 3.14. Після push і **Manual Deploy** збірка має пройти.
+**Рішення (зробіть у Render Dashboard):**
 
-Якщо сервіс було створено як "Python 3" (Build Command / Start Command), Render все одно підхопить Dockerfile при наступному деплої. Переконайтесь, що **Dockerfile** і **.dockerignore** закомічені, потім **Manual Deploy** → **Deploy latest commit**.
+1. Відкрийте сервіс **truthlens-ua** → **Environment**.
+2. Додайте змінну: **Key** = `PYTHON_VERSION`, **Value** = `3.12.7`.
+3. Збережіть і натисніть **Manual Deploy** → **Deploy latest commit**.
+
+Детально: **docs/RENDER_PYTHON_VERSION.md**.
 
 ---
 
