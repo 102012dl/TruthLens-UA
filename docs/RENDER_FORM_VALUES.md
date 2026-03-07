@@ -41,11 +41,11 @@ uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
 
 ## Якщо збірка падає (Exited with status 1, pydantic-core / maturin / Read-only file system)
 
-Render може використати **Python 3.14**, для якого немає готових колес — тоді pip намагається зібрати `pydantic-core` з вихідників (Rust) і падає через обмеження середовища.
+Render може використати **Python 3.14**, ігноруючи `runtime.txt` — тоді pip намагається зібрати `pydantic-core` з вихідників (Rust) і падає.
 
-**Що зроблено в репо:** у корені додано файл **runtime.txt** з вмістом `python-3.12.7`. Render прочитає його і використає Python 3.12, для якого є готові пакети — збірка проходить без компіляції.
+**Рішення: у репо додано Dockerfile.** Якщо в корені є **Dockerfile**, Render автоматично збирає образ через Docker (базовий образ `python:3.12-slim`) і не використовує Python 3.14. Після push і **Manual Deploy** збірка має пройти.
 
-Переконайтесь, що **runtime.txt** закомічено й запушено в гілку `main`. Потім на Render натисніть **Manual Deploy** → **Deploy latest commit**.
+Якщо сервіс було створено як "Python 3" (Build Command / Start Command), Render все одно підхопить Dockerfile при наступному деплої. Переконайтесь, що **Dockerfile** і **.dockerignore** закомічені, потім **Manual Deploy** → **Deploy latest commit**.
 
 ---
 
