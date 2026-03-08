@@ -52,7 +52,7 @@ def collect_state() -> dict:
     elif not has_model:
         next_step = "Запустіть notebooks/01_isot_fake_news_mlflow.ipynb (Run All)."
     else:
-        next_step = "Деплой (docs/DEPLOYMENT.md), потім python scripts/demo_api.py [URL]; git push origin main && git push gitlab main."
+        next_step = "Прогнати демо: python scripts/demo_api.py https://truthlens-ua.onrender.com; підготовка слайдів та план розділу 3 (docs/REQUIRED_ACTIONS_AND_TIME.md)."
 
     return {
         "updated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),

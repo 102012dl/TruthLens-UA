@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-03-07T21:54:33Z",
+  "updated_utc": "2026-03-08T00:07:20Z",
   "data": {
     "Fake.csv": true,
     "True.csv": true
@@ -11,7 +11,7 @@
     "origin_github": true,
     "gitlab": true
   },
-  "last_commit": "bfd83f45228255d93a3fbdce9fa1e5bae72900c0 2026-03-07 22:54:26 +0100 feat: MVP auto-demo â€” analyzer hybrid IPSO, demo_api, run_ab_tests, pytest pass",
-  "next_step": "Деплой (docs/DEPLOYMENT.md), потім python scripts/demo_api.py [URL]; git push origin main && git push gitlab main.",
+  "last_commit": "0ede6e118cfafddfb13748087ea5365883a45772 2026-03-08 00:57:22 +0100 fix(api): add GET / root response, fix Pydantic model_used warning",
+  "next_step": "Прогнати демо: python scripts/demo_api.py https://truthlens-ua.onrender.com; підготовка слайдів та план розділу 3 (docs/REQUIRED_ACTIONS_AND_TIME.md).",
   "note": "Файли даних (Fake.csv, True.csv) та модель (best_model.joblib) не комітяться в репо — вони лише локально. Після клону: python scripts/download_datasets.py та запуск ноутбука 01."
 }

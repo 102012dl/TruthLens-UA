@@ -1,6 +1,6 @@
 # TruthLens-UA — поточний стан проєкту
 
-**Оновлено (UTC):** 2026-03-07T21:54:33Z
+**Оновлено (UTC):** 2026-03-08T00:07:20Z
 
 Цей файл оновлюється скриптом `python scripts/update_project_state.py` для збереження прогресу після паузи чи перезавантаження.
 
@@ -17,12 +17,12 @@
 ## Останній коміт
 
 ```
-bfd83f45228255d93a3fbdce9fa1e5bae72900c0 2026-03-07 22:54:26 +0100 feat: MVP auto-demo â€” analyzer hybrid IPSO, demo_api, run_ab_tests, pytest pass
+0ede6e118cfafddfb13748087ea5365883a45772 2026-03-08 00:57:22 +0100 fix(api): add GET / root response, fix Pydantic model_used warning
 ```
 
 ## Рекомендований наступний крок
 
-Деплой (docs/DEPLOYMENT.md), потім python scripts/demo_api.py [URL]; git push origin main && git push gitlab main.
+Прогнати демо: python scripts/demo_api.py https://truthlens-ua.onrender.com; підготовка слайдів та план розділу 3 (docs/REQUIRED_ACTIONS_AND_TIME.md).
 
 ## Примітка
 

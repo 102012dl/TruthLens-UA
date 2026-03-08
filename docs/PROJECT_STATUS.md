@@ -2,7 +2,7 @@
 
 **Студент:** 102012dl | Neoversity MSCS DS&DA 2026  
 **Дедлайн захисту:** ~14.03.2026  
-**Оновлено:** 05.03.2026  
+**Оновлено:** 08.03.2026  
 
 ---
 
@@ -14,14 +14,14 @@
 | Модель best_model.joblib | ✅ Готово | **95** | Натреновано (ноутбук 01), збережено в artifacts/ |
 | Ноутбуки (ISOT, UA NLP, A/B) | ✅ Виконано | **95** | 01 і 03 виконано (A/B + MLflow) |
 | Датасети (ISOT, UA) | ✅ ISOT є | **85** | Fake.csv, True.csv у data/ (UVic через download_datasets.py) |
-| Деплой (Render/Railway) | 📄 Інструкції готові | **70** | Procfile + docs; потрібна реєстрація та репо |
+| Деплой (Render/Railway) | ✅ Live | **95** | https://truthlens-ua.onrender.com — працює |
 | Git (GitHub/GitLab) | ✅ Remotes налаштовано | **85** | Push у обидва репо; синхронізація за docs/CONTINUE_AFTER_PAUSE.md |
 | Документація | ✅ Готово | **95** | + PROJECT_STATE, CONTINUE_AFTER_PAUSE |
 | CI/CD | ✅ YAML готовий | **80** | Потрібен репо та секрети |
 
-**Орієнтовний загальний відсоток виконання проєкту: 85–90%.**
+**Орієнтовний загальний відсоток виконання проєкту: 92–95%.**
 
-Далі: деплой, демо-перевірка API, підготовка до захисту.
+Далі: прогнати демо на Render (опційно), слайди та план розділу 3. Звіт: **docs/REPORT_080326_0101.md**.
 
 ---
 
@@ -32,8 +32,8 @@
 | Задача | Орієнтовний час | Ресурси |
 |--------|------------------|---------|
 | ~~Ноутбук 03 (A/B)~~ | ✅ Виконано | — |
-| Деплой на Render або Railway | 15–20 хв | Підключення репо, Build/Start (Procfile є) |
-| Прогнати демо-тексти через API | 10–15 хв | Локально або на деплої |
+| ~~Деплой Render~~ | ✅ Виконано | https://truthlens-ua.onrender.com Live |
+| Прогнати демо-тексти через API | 5–10 хв | `python scripts/demo_api.py https://truthlens-ua.onrender.com` |
 | Підготовка слайдів та план розділу 3 | 1–2 год | Мастер-промпт, 8 демо-текстів |
 
 **Сумарно необхідний час до повноцінного захисту: ~2–2,5 години** (без написання тексту диплому). Детально: **docs/REQUIRED_ACTIONS_AND_TIME.md**.
@@ -67,8 +67,8 @@
 - [x] У `data/` лежать Fake.csv, True.csv (ISOT)
 - [x] Виконано ноутбук 01, у `artifacts/` є best_model.joblib
 - [x] Виконано ноутбук 03 (A/B), переглянуто MLflow
-- [ ] API деплой на Render або Railway, перевірено /health та /api/analyze
-- [ ] Пройдено демо-тексти для FAKE/REAL/SUSPICIOUS
+- [x] API деплой на Render, перевірено /health та /api/analyze (truthlens-ua.onrender.com Live)
+- [ ] Пройдено демо-тексти на Render (опційно: `python scripts/demo_api.py https://truthlens-ua.onrender.com`)
 - [ ] Підготовлено слайди та тезисний план розділу 3 (за мастер-промптом)
 
 **Продовження після паузи/перезавантаження:** `python scripts/next_step.py`, **docs/PROJECT_STATE.md**, **docs/CONTINUE_AFTER_PAUSE.md**.
