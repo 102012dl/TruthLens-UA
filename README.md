@@ -129,6 +129,29 @@ uvicorn src.api.main:app --reload
 - `http://localhost:8000/` — базова сторінка.
 - `http://localhost:8000/docs` — Swagger UI для тестування `/api/analyze`, `/api/stats`, `/api/models`.
 
+### 3. One-command demo (Windows)
+
+Для швидкого запуску оновленого MVP (API + Streamlit-дешборд) після перезапуску ПК:
+
+```powershell
+cd C:\Users\home2\PycharmProjects\PythonProject9  # або шлях до репо
+powershell -ExecutionPolicy Bypass -File scripts\run_mvp_demo.ps1 -Mode local
+```
+
+або (Render як бекенд, без локального API):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\run_mvp_demo.ps1 -Mode render
+```
+
+На інших машинах достатньо:
+
+```powershell
+git clone https://github.com/102012dl/TruthLens-UA.git
+cd TruthLens-UA
+powershell -ExecutionPolicy Bypass -File scripts\run_mvp_demo.ps1 -Mode render
+```
+
 ---
 
 ## 📡 API Документація та live-демо
