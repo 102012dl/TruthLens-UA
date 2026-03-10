@@ -6,6 +6,7 @@ TruthLens UA — AI Fact Checker (v1.1).
 """
 import base64
 import io
+import os
 import re
 from datetime import datetime, timedelta
 from typing import Optional, Tuple
