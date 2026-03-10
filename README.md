@@ -43,22 +43,57 @@ Backend MVP for **TruthLens UA**, a Ukrainian/English fake news and information-
 
 ## 🏗 Архітектура
 
-Кодова база спрощена від початкового проєкту **TruthLens**, зосереджена на MVP:
+Система складається з легкого backend-API, ML/ІПСО-ядра та візуального дашборду:
+
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│                        TruthLens UA Platform                    │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐           │
+│  │  Streamlit  │   │  Telegram   │   │    API      │           │
+│  │  Dashboard  │   │   / Mobile  │   │  Clients    │           │
+│  └──────┬──────┘   └──────┬──────┘   └──────┬──────┘           │
+│         │                 │                 │                   │
+│         └─────────────────┼─────────────────┘                   │
+│                           │                                     │
+│  ┌────────────────────────▼────────────────────────┐           │
+│  │              API Layer (FastAPI)                │           │
+│  │   /, /health, /api/analyze, /api/stats, /models │           │
+│  └────────────────────────┬────────────────────────┘           │
+│                           │                                     │
+│  ┌────────────────────────▼────────────────────────┐           │
+│  │              ML / IPSO Engine                   │           │
+│  │  ┌──────────────┐  ┌──────────────┐            │           │
+│  │  │  LinearSVC   │  │   TF-IDF     │            │           │
+│  │  │  (Classifier)│  │  (Features)  │            │           │
+│  │  └──────────────┘  └──────────────┘            │           │
+│  │        + UA rule-based IPSO heuristics         │           │
+│  └────────────────────────┬────────────────────────┘           │
+│                           │                                     │
+│  ┌────────────────────────▼────────────────────────┐           │
+│  │              Data & MLOps Layer                  │          │
+│  │  ┌──────────┐ ┌──────────┐  ┌──────────┐        │          │
+│  │  │  ISOT    │ │ MLflow   │  │ artifacts│        │          │
+│  │  │ Fake/True│ │ notebooks│  │ .joblib  │        │          │
+│  │  └──────────┘ └──────────┘  └──────────┘        │          │
+│  └─────────────────────────────────────────────────┘           │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+Ключові файли:
 
 - `src/ml/analyzer.py` — гібридний аналізатор (LinearSVC + UA ІПСО rule-based fallback).
 - `src/api/main.py` — FastAPI backend з ендпоінтами:
-  - `/` — кореневий health/info.
+  - `/` — коренева перевірка.
   - `/health` — статус сервісу та моделі.
   - `/api/analyze` — аналіз одного тексту.
-  - `/api/models` — інформація про наявні моделі.
+  - `/api/models` — інформація про доступні моделі.
   - `/api/stats` — агрегована статистика викликів.
 - `scripts/truthlens_dashboard.py` — Streamlit-дешборд (Analyze, History, Statistics, QR).
 - `scripts/demo_api.py`, `scripts/demo_mvp_like_replit.py`, `scripts/demo_streamlit_flow.py` — демо-скрипти для Render API і локального потоку.
 - `tests/unit/test_ml_validation.py` — юніт-тести для ML та ІПСО-логіки.
 - `data/` — датасет ISOT (Fake/True) у форматі CSV.
 - `artifacts/best_model.joblib` — навчена ML-модель.
-
-Детальний аналіз зв’язку з оригінальним репо TruthLens — у `docs/TRUTHLENS_REPO.md`.
 
 ---
 
