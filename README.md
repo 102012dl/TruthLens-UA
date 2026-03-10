@@ -164,6 +164,14 @@ powershell -ExecutionPolicy Bypass -File scripts\run_mvp_demo.ps1 -Mode render
 
 Деталі щодо деплою та посилань: `docs/MVP_DEPLOY_AND_LINKS.md`.
 
+### Основні ендпоінти
+
+- `POST /api/analyze` — аналіз тексту (основний ендпоінт; використовується і дашбордом, і Telegram-ботом).
+- `POST /api/analyze_url` — аналіз контенту сторінки за URL:
+  - приймає `{"url": "...", "override_text": "..."}` (override опційний),
+  - завантажує HTML сторінки, прибирає теги, нормалізує текст,
+  - відправляє отриманий текст у той самий ML/ІПСО-аналізатор, що й `/api/analyze`.
+
 ---
 
 ## 🧠 ML Pipeline, дані та модель

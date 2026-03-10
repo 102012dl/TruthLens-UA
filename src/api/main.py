@@ -2,7 +2,9 @@
 from typing import Optional, List
 import time
 import logging
+import re
 
+import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, Field
@@ -60,6 +62,14 @@ class AnalyzeResponse(BaseModel):
     processing_time_ms: float
 
 
+class AnalyzeURLRequest(BaseModel):
+    url: str = Field(..., description="URL of news article or page to analyze")
+    override_text: Optional[str] = Field(
+        None,
+        description="If provided and long enough, this text will be analyzed instead of fetched page content",
+    )
+
+
 @app.get("/")
 async def root() -> dict:
     """Root: посилання на документацію та ендпоінти."""
@@ -94,6 +104,41 @@ async def analyze(req: AnalyzeRequest) -> AnalyzeResponse:
         )
     except Exception as exc:  # noqa: BLE001
         logger.error("Analyze error: %s", exc)
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@app.post("/api/analyze_url", response_model=AnalyzeResponse)
+async def analyze_url(req: AnalyzeURLRequest) -> AnalyzeResponse:
+    """Analyze URL content: fetch page, strip HTML, analyze text via same ML/IPSO engine."""
+    start = time.time()
+    text: str = (req.override_text or "").strip()
+    if not text:
+        url = req.url.strip()
+        if not url.lower().startswith(("http://", "https://")):
+            url = "http://" + url
+        try:
+            resp = requests.get(url, timeout=20)
+            resp.raise_for_status()
+        except Exception as exc:  # noqa: BLE001
+            logger.error("URL fetch error: %s", exc)
+            raise HTTPException(status_code=502, detail=f"Failed to fetch URL: {exc}") from exc
+
+        html = resp.text
+        extracted = re.sub(r"<[^>]+>", " ", html)
+        extracted = re.sub(r"\s+", " ", extracted).strip()
+        text = extracted[:8000]
+
+    if len(text) < 5:
+        raise HTTPException(status_code=400, detail="Extracted text is too short for analysis.")
+
+    try:
+        result = analyze_text(text)
+        return AnalyzeResponse(
+            **result,
+            processing_time_ms=round((time.time() - start) * 1000, 1),
+        )
+    except Exception as exc:  # noqa: BLE001
+        logger.error("Analyze URL error: %s", exc)
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
 
