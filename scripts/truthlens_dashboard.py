@@ -79,6 +79,17 @@ with st.sidebar:
     )
     st.markdown("---")
     st.caption("API: truthlens-ua.onrender.com")
+    st.markdown("### One-click demo commands")
+    st.caption("Windows (локальний API + дашборд):")
+    st.code(
+        "powershell -ExecutionPolicy Bypass -File scripts\\run_mvp_demo.ps1 -Mode local",
+        language=None,
+    )
+    st.caption("Windows (Render API + дашборд):")
+    st.code(
+        "powershell -ExecutionPolicy Bypass -File scripts\\run_mvp_demo.ps1 -Mode render",
+        language=None,
+    )
 
 # --- API stats: оновлюється при натисканні Refresh або TTL 30 с ---
 if "stats_refresh" not in st.session_state:
